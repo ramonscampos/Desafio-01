@@ -15,11 +15,12 @@ interface MyTasksListProps {
     title: string;
     done: boolean;
   }[];
+  isDarkTheme: boolean;
   onPress: (id: number) => void;
   onLongPress: (id: number) => void;
 }
 
-export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
+export function MyTasksList({ tasks, isDarkTheme, onLongPress, onPress }: MyTasksListProps) {
   return (
     <FlatList
       data={tasks}
@@ -31,14 +32,14 @@ export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
             activeOpacity={0.7}
             onPress={() => onPress(item.id)}
             onLongPress={() => onLongPress(item.id)}
-            style={item.done ? styles.taskButtonDone : styles.taskButton }
+            style={item.done ? [styles.taskButtonDone, isDarkTheme && darkTheme.taskButtonDone] : styles.taskButton }
           >
             <View 
               testID={`marker-${index}`}
-              style={item.done ? styles.taskMarkerDone : styles.taskMarker }
+              style={item.done ? [styles.taskMarkerDone, isDarkTheme && darkTheme.taskMarkerDone] : [styles.taskMarker, isDarkTheme && darkTheme.taskMarker] }
             />
             <Text 
-              style={item.done ? styles.taskTextDone : styles.taskText }
+              style={item.done ? [styles.taskTextDone, isDarkTheme && darkTheme.taskTextDone] : [styles.taskText, isDarkTheme && darkTheme.taskText] }
             >
               {item.title}
             </Text>
@@ -103,5 +104,26 @@ const styles = StyleSheet.create({
   taskTextDone: {
     color: '#A09CB1',
     textDecorationLine: 'line-through'
+  }
+})
+
+const darkTheme = StyleSheet.create({
+  header: {
+    color: '#BF4AD4',
+  },
+  taskButtonDone: {
+    backgroundColor: 'rgba(34,34,34,0.6)',
+  },
+  taskMarker: {
+    borderColor: '#12A952',
+  },
+  taskText: {
+    color: '#FFF',
+  },
+  taskMarkerDone: {
+    backgroundColor: '#12A952'
+  },
+  taskTextDone: {
+    color: '#E1E1E6',
   }
 })
